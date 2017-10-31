@@ -130,7 +130,7 @@ add_nng_test(device 5)
 add_nng_test(errors 2)
 add_nng_test(pair1 5)
 add_nng_test(udp 5)
-if (NNG_HAVE_ZEROTIER)
+if (NNG_ENABLE_ZEROTIER)
     add_nng_test(zt 60)
 endif()
 

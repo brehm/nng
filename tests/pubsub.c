@@ -10,6 +10,8 @@
 
 #include "convey.h"
 #include "nng.h"
+#include "protocol/pubsub0/pub.h"
+#include "protocol/pubsub0/sub.h"
 
 #include <string.h>
 
@@ -18,12 +20,30 @@
 	So(nng_msg_len(m) == strlen(s)); \
 	So(memcmp(nng_msg_body(m), s, strlen(s)) == 0)
 
+#if defined(NNG_ENABLE_PUB0)
+#define PubConvey Convey
+#else
+#define PubConvey SkipConvey
+#endif
+
+#if defined(NNG_ENABLE_SUB0)
+#define SubConvey Convey
+#else
+#define SubConvey SkipConvey
+#endif
+
+#if defined(NNG_ENABLE_PUB0) && defined(NNG_ENABLE_SUB0)
+#define PubSubConvey Convey
+#else
+#define PubSubConvey SkipConvey
+#endif
+
 TestMain("PUB/SUB pattern", {
 	const char *addr = "inproc://test";
 
 	Reset({ nng_fini(); });
 
-	Convey("We can create a PUB socket", {
+	PubConvey("We can create a PUB socket", {
 		nng_socket pub;
 
 		So(nng_pub_open(&pub) == 0);
@@ -34,9 +54,19 @@ TestMain("PUB/SUB pattern", {
 			nng_msg *msg;
 			So(nng_recvmsg(pub, &msg, 0) == NNG_ENOTSUP);
 		});
+
+		Convey("It cannot subscribe", {
+			So(nng_setopt(pub, NNG_OPT_SUB_SUBSCRIBE, "", 0) ==
+			    NNG_ENOTSUP);
+		});
+
+		Convey("It cannot unsubscribe", {
+			So(nng_setopt(pub, NNG_OPT_SUB_UNSUBSCRIBE, "", 0) ==
+			    NNG_ENOTSUP);
+		});
 	});
 
-	Convey("We can create a SUB socket", {
+	SubConvey("We can create a SUB socket", {
 		nng_socket sub;
 		So(nng_sub_open(&sub) == 0);
 
@@ -48,9 +78,26 @@ TestMain("PUB/SUB pattern", {
 			So(nng_sendmsg(sub, msg, 0) == NNG_ENOTSUP);
 			nng_msg_free(msg);
 		});
+
+		Convey("It can subscribe", {
+			So(nng_setopt(sub, NNG_OPT_SUB_SUBSCRIBE, "ABC", 3) ==
+			    0);
+			So(nng_setopt(sub, NNG_OPT_SUB_SUBSCRIBE, "", 0) == 0);
+			Convey("And it can unsubscribe", {
+				So(nng_setopt(sub, NNG_OPT_SUB_UNSUBSCRIBE,
+				       "ABC", 3) == 0);
+				So(nng_setopt(sub, NNG_OPT_SUB_UNSUBSCRIBE, "",
+				       0) == 0);
+
+				So(nng_setopt(sub, NNG_OPT_SUB_UNSUBSCRIBE, "",
+				       0) == NNG_ENOENT);
+				So(nng_setopt(sub, NNG_OPT_SUB_UNSUBSCRIBE,
+				       "HELLO", 0) == NNG_ENOENT);
+			});
+		});
 	});
 
-	Convey("We can create a linked PUB/SUB pair", {
+	PubSubConvey("We can create a linked PUB/SUB pair", {
 		nng_socket pub;
 		nng_socket sub;
 
@@ -72,28 +119,6 @@ TestMain("PUB/SUB pattern", {
 		So(nng_dial(pub, addr, NULL, 0) == 0);
 
 		nng_msleep(20); // give time for connecting threads
-
-		Convey("Sub can subscribe", {
-			So(nng_setopt(sub, NNG_OPT_SUB_SUBSCRIBE, "ABC", 3) ==
-			    0);
-			So(nng_setopt(sub, NNG_OPT_SUB_SUBSCRIBE, "", 0) == 0);
-			Convey("Unsubscribe works", {
-				So(nng_setopt(sub, NNG_OPT_SUB_UNSUBSCRIBE,
-				       "ABC", 3) == 0);
-				So(nng_setopt(sub, NNG_OPT_SUB_UNSUBSCRIBE, "",
-				       0) == 0);
-
-				So(nng_setopt(sub, NNG_OPT_SUB_UNSUBSCRIBE, "",
-				       0) == NNG_ENOENT);
-				So(nng_setopt(sub, NNG_OPT_SUB_UNSUBSCRIBE,
-				       "HELLO", 0) == NNG_ENOENT);
-			});
-		});
-
-		Convey("Pub cannot subscribe", {
-			So(nng_setopt(pub, NNG_OPT_SUB_SUBSCRIBE, "", 0) ==
-			    NNG_ENOTSUP);
-		});
 
 		Convey("Subs can receive from pubs", {
 			nng_msg *msg;

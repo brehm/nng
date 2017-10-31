@@ -21,7 +21,7 @@ SYNOPSIS
 
 [source,c]
 ----------
-#include <nng/protocol/pubsub/pubsub.h>
+#include <nng/protocol/pubsub/sub.h>
 
 int nng_sub_open(nng_socket *s);
 int nng_sub0_open(nng_socket *s);

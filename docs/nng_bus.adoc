@@ -21,11 +21,10 @@ SYNOPSIS
 
 [source,c]
 ----------
-#include <nng/protocol/bus/bus.h>
+#include <nng/protocol/bus0/bus.h>
 
 int nng_bus_open(nng_socket *s);
 int nng_bus0_open(nng_socket *s);
-
 ----------
 
 DESCRIPTION

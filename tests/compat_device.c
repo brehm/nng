@@ -146,6 +146,8 @@ int main()
 
     /*  Test the loopback device. */
 
+#ifdef NNG_ENABLE_BUS0
+
     /*  Start the device. */
     nn_thread_init(&thread3, device3, NULL);
     nn_sleep(100);
@@ -175,11 +177,13 @@ int main()
     test_close(ende1);
     test_close(deve);
 
+    nn_thread_term(&thread3);
+#endif /* NNG_ENABLE_BUS0 */
+
     /*  Shut down the devices. */
     nn_term();
     nn_thread_term(&thread1);
     nn_thread_term(&thread2);
-    nn_thread_term(&thread3);
 
     return (0);
 }

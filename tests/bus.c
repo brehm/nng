@@ -11,12 +11,19 @@
 #include "convey.h"
 #include "nng.h"
 
+#include "protocol/bus0/bus.h"
+
 #include <string.h>
 
 #define APPENDSTR(m, s) nng_msg_append(m, s, strlen(s))
 #define CHECKSTR(m, s)                   \
 	So(nng_msg_len(m) == strlen(s)); \
 	So(memcmp(nng_msg_body(m), s, strlen(s)) == 0)
+
+#ifndef NNG_ENABLE_BUS0
+#undef Convey
+#define Convey SkipConvey
+#endif
 
 TestMain("BUS pattern", {
 	const char *addr = "inproc://test";

@@ -12,6 +12,8 @@
 #include "nng.h"
 #include "trantest.h"
 
+#include "protocol/pubsub0/sub.h"
+
 #include "stubs.h"
 
 #include <string.h>

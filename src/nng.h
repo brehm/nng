@@ -338,11 +338,8 @@ enum nng_flag_enum {
 };
 
 // Builtin protocol socket constructors.
-NNG_DECL int nng_bus0_open(nng_socket *);
 NNG_DECL int nng_pair0_open(nng_socket *);
 NNG_DECL int nng_pair1_open(nng_socket *);
-NNG_DECL int nng_pub0_open(nng_socket *);
-NNG_DECL int nng_sub0_open(nng_socket *);
 NNG_DECL int nng_push0_open(nng_socket *);
 NNG_DECL int nng_pull0_open(nng_socket *);
 NNG_DECL int nng_req0_open(nng_socket *);
@@ -353,10 +350,7 @@ NNG_DECL int nng_respondent0_open(nng_socket *);
 // Default versions.  These provide compile time defaults; note that
 // the actual protocols are baked into the binary; this should avoid
 // suprising.  Choosing a new protocol should be done explicitly.
-#define nng_bus_open nng_bus0_open
 #define nng_pair_open nng_pair1_open
-#define nng_pub_open nng_pub0_open
-#define nng_sub_open nng_sub0_open
 #define nng_push_open nng_push0_open
 #define nng_pull_open nng_pull0_open
 #define nng_req_open nng_req0_open
@@ -387,8 +381,8 @@ NNG_DECL int nng_respondent0_open(nng_socket *);
 
 #define NNG_OPT_PAIR1_POLY "pair1:polyamorous"
 
-#define NNG_OPT_SUB_SUBSCRIBE "sub:subscribe"
-#define NNG_OPT_SUB_UNSUBSCRIBE "sub:unsubscribe"
+//#define NNG_OPT_SUB_SUBSCRIBE "sub:subscribe"
+//#define NNG_OPT_SUB_UNSUBSCRIBE "sub:unsubscribe"
 
 #define NNG_OPT_REQ_RESENDTIME "req:resend-time"
 
