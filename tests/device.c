@@ -11,6 +11,8 @@
 #include "convey.h"
 #include "nng.h"
 
+#include "protocol/pair1/pair.h"
+
 #include <string.h>
 
 #define APPENDSTR(m, s) nng_msg_append(m, s, strlen(s))
@@ -33,13 +35,19 @@ dodev(void *arg)
 
 #define SECOND(x) ((x) *1000)
 
+#ifdef NNG_ENABLE_PAIR1
+#define Pair1Convey Convey
+#else
+#define Pair1Convey SkipConvey
+#endif
+
 Main({
 
 	Test("PAIRv1 device", {
 		const char *addr1 = "inproc://dev1";
 		const char *addr2 = "inproc://dev2";
 
-		Convey("We can create a PAIRv1 device", {
+		Pair1Convey("We can create a PAIRv1 device", {
 			nng_socket   dev1;
 			nng_socket   dev2;
 			nng_socket   end1;
@@ -68,8 +76,8 @@ Main({
 			So(nng_listen(dev1, addr1, NULL, 0) == 0);
 			So(nng_listen(dev2, addr2, NULL, 0) == 0);
 
-			So(nng_pair_open(&end1) == 0);
-			So(nng_pair_open(&end2) == 0);
+			So(nng_pair1_open(&end1) == 0);
+			So(nng_pair1_open(&end2) == 0);
 
 			So(nng_dial(end1, addr1, NULL, 0) == 0);
 			So(nng_dial(end2, addr2, NULL, 0) == 0);

@@ -8,8 +8,8 @@
 // found online at https://opensource.org/licenses/MIT.
 //
 
-#ifndef NNG_PROTOCOL_PUBSUB_SUB_H
-#define NNG_PROTOCOL_PUBSUB_SUB_H
+#ifndef NNG_PROTOCOL_PUBSUB0_SUB_H
+#define NNG_PROTOCOL_PUBSUB0_SUB_H
 
 extern int nng_sub0_open(nng_socket *);
 
@@ -20,4 +20,4 @@ extern int nng_sub0_open(nng_socket *);
 #define NNG_OPT_SUB_SUBSCRIBE "sub:subscribe"
 #define NNG_OPT_SUB_UNSUBSCRIBE "sub:unsubscribe"
 
-#endif // NNG_PROTOCOL_PUBSUB_SUB_H
+#endif // NNG_PROTOCOL_PUBSUB0_SUB_H

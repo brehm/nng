@@ -32,6 +32,15 @@
 
 #endif
 
+#ifdef NNG_ENABLE_PAIR1
+#include "protocol/pair1/pair.h"
+#elif defined(NNG_ENABLE_PAIR0)
+#include "protocol/pair0/pair.h"
+#else
+#undef Convey
+#define Convey SkipConvey
+#endif
+
 TestMain("Poll FDs", {
 
 	Convey("Given a connected pair of sockets", {

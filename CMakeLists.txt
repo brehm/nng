@@ -100,10 +100,17 @@ option (NNG_ENABLE_BUS0 "Enable BUSv0 protocol." ON)
 if (NNG_ENABLE_BUS0)
     add_definitions (-DNNG_ENABLE_BUS0)
 endif ()
+
+option (NNG_ENABLE_PAIR1 "Enable PAIRv1 protocol." ON)
+if (NNG_ENABLE_PAIR1)
+    add_definitions (-DNNG_ENABLE_PAIR1)
+endif ()
+
 option (NNG_ENABLE_PUB0 "Enable PUBv0 protocol." ON)
 if (NNG_ENABLE_PUB0)
     add_definitions (-DNNG_ENABLE_PUB0)
 endif ()
+
 option (NNG_ENABLE_SUB0 "Enable SUBv0 protocol." ON)
 if (NNG_ENABLE_SUB0)
     add_definitions (-DNNG_ENABLE_SUB0)

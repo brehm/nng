@@ -77,7 +77,6 @@ set (NNG_SOURCES
 
     
     protocol/pair/pair_v0.c
-    protocol/pair/pair_v1.c
 
     protocol/pipeline/pull.c
     protocol/pipeline/push.c
@@ -97,6 +96,7 @@ set (NNG_SOURCES
 )
 
 add_subdirectory(protocol/bus0)
+add_subdirectory(protocol/pair1)
 add_subdirectory(protocol/pubsub0)
 
 if (NNG_PLATFORM_POSIX)
