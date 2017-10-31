@@ -10,6 +10,10 @@
 
 #include "convey.h"
 #include "nng.h"
+
+#include "protocol/pipeline0/pull.h"
+#include "protocol/pipeline0/push.h"
+
 #include <string.h>
 
 #define APPENDSTR(m, s) nng_msg_append(m, s, strlen(s))
@@ -18,10 +22,28 @@
 	So(memcmp(nng_msg_body(m), s, strlen(s)) == 0)
 #define MILLISECOND(x) (x)
 
+#ifdef NNG_ENABLE_PUSH0
+#define PushConvey Convey
+#else
+#define PushConvey SkipConvey
+#endif
+
+#ifdef NNG_ENABLE_PULL0
+#define PullConvey Convey
+#else
+#define PullConvey SkipConvey
+#endif
+
+#if defined(NNG_ENABLE_PULL0) && defined(NNG_ENABLE_PUSH0)
+#define PipelineConvey Convey
+#else
+#define PipelineConvey SkipConvey
+#endif
+
 TestMain("PIPELINE (PUSH/PULL) pattern", {
 	atexit(nng_fini);
 	const char *addr = "inproc://test";
-	Convey("We can create a PUSH socket", {
+	PushConvey("We can create a PUSH socket", {
 		nng_socket push;
 
 		So(nng_push_open(&push) == 0);
@@ -34,7 +56,7 @@ TestMain("PIPELINE (PUSH/PULL) pattern", {
 		});
 	});
 
-	Convey("We can create a PULL socket", {
+	PullConvey("We can create a PULL socket", {
 		nng_socket pull;
 		So(nng_pull_open(&pull) == 0);
 
@@ -48,7 +70,7 @@ TestMain("PIPELINE (PUSH/PULL) pattern", {
 		});
 	});
 
-	Convey("We can create a linked PUSH/PULL pair", {
+	PipelineConvey("We can create a linked PUSH/PULL pair", {
 		nng_socket push;
 		nng_socket pull;
 		nng_socket what;
@@ -87,7 +109,7 @@ TestMain("PIPELINE (PUSH/PULL) pattern", {
 		});
 	});
 
-	Convey("Load balancing", {
+	PipelineConvey("Load balancing", {
 		nng_msg *    abc;
 		nng_msg *    def;
 		nng_duration msecs;

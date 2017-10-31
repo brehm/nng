@@ -121,6 +121,16 @@ if (NNG_ENABLE_SUB0)
     add_definitions (-DNNG_ENABLE_SUB0)
 endif ()
 
+option (NNG_ENABLE_PUSH0 "Enable PUSHv0 protocol." ON)
+if (NNG_ENABLE_PUSH0)
+    add_definitions (-DNNG_ENABLE_PUSH0)
+endif ()
+
+option (NNG_ENABLE_PULL0 "Enable PULLv0 protocol." ON)
+if (NNG_ENABLE_PULL0)
+    add_definitions (-DNNG_ENABLE_PULL0)
+endif ()
+
 option (NNG_ENABLE_ZEROTIER "Enable ZeroTier transport (requires libzerotiercore)." OFF)
 set (NNG_ZEROTIER_SOURCE "" CACHE PATH "Location of ZeroTier source tree.")
 if (NNG_ENABLE_ZEROTIER)

@@ -75,9 +75,6 @@ set (NNG_SOURCES
     core/transport.c
     core/transport.h
 
-    protocol/pipeline/pull.c
-    protocol/pipeline/push.c
-    
     protocol/reqrep/rep.c
     protocol/reqrep/req.c
 
@@ -95,6 +92,7 @@ set (NNG_SOURCES
 add_subdirectory(protocol/bus0)
 add_subdirectory(protocol/pair0)
 add_subdirectory(protocol/pair1)
+add_subdirectory(protocol/pipeline0)
 add_subdirectory(protocol/pubsub0)
 
 if (NNG_PLATFORM_POSIX)

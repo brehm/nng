@@ -67,7 +67,9 @@ if (NNG_TESTS)
     if (NNG_ENABLE_BUS0 AND
         NNG_ENABLE_PAIR0 AND
         NNG_ENABLE_PUB0 AND
-        NNG_ENABLE_SUB0)
+        NNG_ENABLE_SUB0 AND
+        NNG_ENABLE_PUSH0 AND
+        NNG_ENABLE_PULL0)
 
         macro (add_nng_compat_test NAME TIMEOUT)
             list (APPEND all_tests ${NAME})

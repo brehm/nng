@@ -12,6 +12,8 @@
 #include "nng.h"
 #include "protocol/bus0/bus.h"
 #include "protocol/pair0/pair.h"
+#include "protocol/pipeline0/pull.h"
+#include "protocol/pipeline0/push.h"
 #include "protocol/pubsub0/pub.h"
 #include "protocol/pubsub0/sub.h"
 
@@ -103,8 +105,12 @@ static const struct {
 #ifdef NNG_ENABLE_PAIR0
 	{ NN_PAIR, nng_pair0_open },
 #endif
+#ifdef NNG_ENABLE_PUSH0
 	{ NN_PUSH, nng_push0_open },
+#endif
+#ifdef NNG_ENABLE_PULL0
 	{ NN_PULL, nng_pull0_open },
+#endif
 #ifdef NNG_ENABLE_PUB0
 	{ NN_PUB, nng_pub0_open },
 #endif
