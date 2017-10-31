@@ -11,7 +11,11 @@
 #ifndef NNG_PROTOCOL_PUBSUB0_SUB_H
 #define NNG_PROTOCOL_PUBSUB0_SUB_H
 
-extern int nng_sub0_open(nng_socket *);
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+NNG_DECL int nng_sub0_open(nng_socket *);
 
 #ifndef nng_sub_open
 #define nng_sub_open nng_sub0_open
@@ -19,5 +23,9 @@ extern int nng_sub0_open(nng_socket *);
 
 #define NNG_OPT_SUB_SUBSCRIBE "sub:subscribe"
 #define NNG_OPT_SUB_UNSUBSCRIBE "sub:unsubscribe"
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // NNG_PROTOCOL_PUBSUB0_SUB_H

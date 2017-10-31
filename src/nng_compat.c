@@ -11,6 +11,7 @@
 #include "nng_compat.h"
 #include "nng.h"
 #include "protocol/bus0/bus.h"
+#include "protocol/pair0/pair.h"
 #include "protocol/pubsub0/pub.h"
 #include "protocol/pubsub0/sub.h"
 
@@ -99,7 +100,9 @@ static const struct {
 #ifdef NNG_ENABLE_BUS0
 	{ NN_BUS, nng_bus0_open },
 #endif
+#ifdef NNG_ENABLE_PAIR0
 	{ NN_PAIR, nng_pair0_open },
+#endif
 	{ NN_PUSH, nng_push0_open },
 	{ NN_PULL, nng_pull0_open },
 #ifdef NNG_ENABLE_PUB0

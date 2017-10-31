@@ -101,6 +101,11 @@ if (NNG_ENABLE_BUS0)
     add_definitions (-DNNG_ENABLE_BUS0)
 endif ()
 
+option (NNG_ENABLE_PAIR0 "Enable PAIRv0 protocol." ON)
+if (NNG_ENABLE_PAIR0)
+    add_definitions (-DNNG_ENABLE_PAIR0)
+endif ()
+
 option (NNG_ENABLE_PAIR1 "Enable PAIRv1 protocol." ON)
 if (NNG_ENABLE_PAIR1)
     add_definitions (-DNNG_ENABLE_PAIR1)

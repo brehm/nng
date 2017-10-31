@@ -51,6 +51,11 @@ nni_tran_register(const nni_tran *tran)
 	nni_mtx_lock(&nni_tran_lk);
 	// Check to see if the transport is already registered...
 	NNI_LIST_FOREACH (&nni_tran_list, t) {
+		if (tran->tran_init == t->t_tran.tran_init) {
+			nni_mtx_unlock(&nni_tran_lk);
+			// Same transport, duplicate registration.
+			return (0);
+		}
 		if (strcmp(tran->tran_scheme, t->t_tran.tran_scheme) == 0) {
 			nni_mtx_unlock(&nni_tran_lk);
 			return (NNG_ESTATE);

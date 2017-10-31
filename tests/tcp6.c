@@ -14,6 +14,16 @@
 #include "core/nng_impl.h"
 // TCP tests for IPv6.
 
+#if defined(NNG_ENABLE_PAIR1)
+#define PairConvey Convey
+#include "protocol/pair1/pair.h"
+#elif defined(NNG_ENABLE_PAIR0)
+#define PairConvey Convey
+#include "protocol/pair0/pair.h"
+#else
+#define PairConvey SkipConvey
+#endif
+
 static int
 has_v6(void)
 {
@@ -69,7 +79,7 @@ check_props_v6(nng_msg *msg, nng_listener l, nng_dialer d)
 		So(nng_dialer_getopt(d, NNG_OPT_REMADDR, &ra, &z) != 0);
 	});
 
-	Convey("Malformed TCPv6 addresses do not panic", {
+	PairConvey("Malformed TCPv6 addresses do not panic", {
 		nng_socket s1;
 
 		So(nng_pair_open(&s1) == 0);

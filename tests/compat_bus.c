@@ -28,7 +28,6 @@
 
 int main ()
 {
-#ifdef NNG_ENABLE_BUS0
     int rc;
     int bus1;
     int bus2;
@@ -82,8 +81,6 @@ int main ()
     test_close (bus3);
     test_close (bus2);
     test_close (bus1);
-
-#endif /* NNG_ENABLE_BUS0 */
 
     return 0;
 }

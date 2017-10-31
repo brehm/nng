@@ -8,21 +8,21 @@
 // found online at https://opensource.org/licenses/MIT.
 //
 
-#ifndef NNG_PROTOCOL_BUS0_BUS_H
-#define NNG_PROTOCOL_BUS0_BUS_H
+#ifndef NNG_PROTOCOL_PAIR0_PAIR_H
+#define NNG_PROTOCOL_PAIR0_PAIR_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-NNG_DECL int nng_bus0_open(nng_socket *);
+NNG_DECL int nng_pair0_open(nng_socket *);
 
-#ifndef nng_bus_open
-#define nng_bus_open nng_bus0_open
+#ifndef nng_pair_open
+#define nng_pair_open nng_pair0_open
 #endif
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // NNG_PROTOCOL_BUS0_BUS_H
+#endif // NNG_PROTOCOL_PAIR0_PAIR_H

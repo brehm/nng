@@ -11,10 +11,18 @@
 #ifndef NNG_PROTOCOL_PUBSUB0_PUB_H
 #define NNG_PROTOCOL_PUBSUB0_PUB_H
 
-extern int nng_pub0_open(nng_socket *);
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+NNG_DECL int nng_pub0_open(nng_socket *);
 
 #ifndef nng_pub_open
 #define nng_pub_open nng_pub0_open
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif // NNG_PROTOCOL_PUBSUB0_PUB_H

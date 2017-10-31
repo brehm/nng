@@ -14,6 +14,16 @@
 
 #include "protocol/pubsub0/sub.h"
 
+#if defined(NNG_ENABLE_PAIR1)
+#define PairConvey Convey
+#include "protocol/pair1/pair.h"
+#elif defined(NNG_ENABLE_PAIR0)
+#define PairConvey Convey
+#include "protocol/pair0/pair.h"
+#else
+#define PairConvey SkipConvey
+#endif
+
 #include "stubs.h"
 
 #include <string.h>
@@ -26,7 +36,7 @@ TestMain("Socket Operations", {
 	//	Reset({ nng_fini(); });
 	Reset({ nng_closeall(); });
 
-	Convey("We are able to open a PAIR socket", {
+	PairConvey("We are able to open a PAIR socket", {
 		int        rv;
 		nng_socket s1;
 

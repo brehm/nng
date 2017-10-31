@@ -11,6 +11,16 @@
 #include "convey.h"
 #include "trantest.h"
 
+#if defined(NNG_ENABLE_PAIR1)
+#define PairConvey Convey
+#include "protocol/pair1/pair.h"
+#elif defined(NNG_ENABLE_PAIR0)
+#define PairConvey Convey
+#include "protocol/pair0/pair.h"
+#else
+#define PairConvey SkipConvey
+#endif
+
 // TCP tests.
 
 #ifndef _WIN32
@@ -53,7 +63,7 @@ TestMain("TCP Transport", {
 
 	trantest_test_extended("tcp://127.0.0.1:%u", check_props_v4);
 
-	Convey("We cannot connect to wild cards", {
+	PairConvey("We cannot connect to wild cards", {
 		nng_socket s;
 		char       addr[NNG_MAXADDRLEN];
 
@@ -63,7 +73,7 @@ TestMain("TCP Transport", {
 		So(nng_dial(s, addr, NULL, 0) == NNG_EADDRINVAL);
 	});
 
-	Convey("We can bind to wild card", {
+	PairConvey("We can bind to wild card", {
 		nng_socket s1;
 		nng_socket s2;
 		char       addr[NNG_MAXADDRLEN];
@@ -81,7 +91,7 @@ TestMain("TCP Transport", {
 		So(nng_dial(s2, addr, NULL, 0) == 0);
 	});
 
-	Convey("Malformed TCP addresses do not panic", {
+	PairConvey("Malformed TCP addresses do not panic", {
 		nng_socket s1;
 
 		So(nng_pair_open(&s1) == 0);

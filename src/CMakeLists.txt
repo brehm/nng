@@ -75,9 +75,6 @@ set (NNG_SOURCES
     core/transport.c
     core/transport.h
 
-    
-    protocol/pair/pair_v0.c
-
     protocol/pipeline/pull.c
     protocol/pipeline/push.c
     
@@ -96,6 +93,7 @@ set (NNG_SOURCES
 )
 
 add_subdirectory(protocol/bus0)
+add_subdirectory(protocol/pair0)
 add_subdirectory(protocol/pair1)
 add_subdirectory(protocol/pubsub0)
 

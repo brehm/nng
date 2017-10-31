@@ -11,7 +11,13 @@
 #include "convey.h"
 #include "trantest.h"
 
+#include "protocol/pair0/pair.h"
 #include "transport/zerotier/zerotier.h"
+
+#ifndef NNG_ENABLE_PAIR0
+#undef Convey
+#define Convey SkipConvey
+#endif
 
 // zerotier tests.
 
@@ -336,6 +342,8 @@ TestMain("ZeroTier Transport", {
 		So(nng_dialer_start(d, 0) == 0);
 		nng_msleep(2000);
 	});
+
+	So(nng_zt_register() == 0);
 
 	trantest_test_extended("zt://" NWID "/*:%u", check_props);
 
