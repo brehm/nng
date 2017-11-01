@@ -25,7 +25,6 @@ SYNOPSIS
 #include <nng/protocol/pair0/pair.h>
 
 int nng_pair0_open(nng_socket *s);
-int nng_pair_open(nng_socket *s);
 ----------
 
 .Version 1
@@ -34,7 +33,6 @@ int nng_pair_open(nng_socket *s);
 #include <nng/protocol/pair1/pair.h>
 
 int nng_pair1_open(nng_socket *s);
-int nng_pair_open(nng_socket *s);
 ----------
 
 DESCRIPTION

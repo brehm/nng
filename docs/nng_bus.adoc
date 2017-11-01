@@ -23,7 +23,6 @@ SYNOPSIS
 ----------
 #include <nng/protocol/bus0/bus.h>
 
-int nng_bus_open(nng_socket *s);
 int nng_bus0_open(nng_socket *s);
 ----------
 
@@ -56,7 +55,7 @@ likely that message loss is to occur.
 Socket Operations
 ~~~~~~~~~~~~~~~~~
 
-The `nng_bus_open()` call creates a bus socket.  This socket
+The `nng_bus0_open()` call creates a bus socket.  This socket
 may be used to send and receive messages. Sending messages will
 attempt to deliver to each directly connected peer.
 
