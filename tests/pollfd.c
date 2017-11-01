@@ -32,18 +32,33 @@
 
 #endif
 
+#ifdef NNG_ENABLE_PULL0
+#include "protocol/pipeline0/pull.h"
+#define PullConvey Convey
+#else
+#define PullConvey SkipConvey
+#endif
+
+#ifdef NNG_ENABLE_PUSH0
+#include "protocol/pipeline0/push.h"
+#define PushConvey Convey
+#else
+#define PushConvey SkipConvey
+#endif
+
 #ifdef NNG_ENABLE_PAIR1
 #include "protocol/pair1/pair.h"
+#define PairConvey Convey
 #elif defined(NNG_ENABLE_PAIR0)
 #include "protocol/pair0/pair.h"
+#define PairConvey Convey
 #else
-#undef Convey
-#define Convey SkipConvey
+#define PairConvey SkipConvey
 #endif
 
 TestMain("Poll FDs", {
 
-	Convey("Given a connected pair of sockets", {
+	PairConvey("Given a connected pair of sockets", {
 		nng_socket s1;
 		nng_socket s2;
 
@@ -115,26 +130,25 @@ TestMain("Poll FDs", {
 			So(nng_getopt(s1, NNG_OPT_RECVFD, &fd, &sz) == 0);
 			So(sz == sizeof(fd));
 		});
-		Convey("We cannot get a send FD for PULL", {
-			nng_socket s3;
-			int        fd;
-			size_t     sz;
-			So(nng_pull_open(&s3) == 0);
-			Reset({ nng_close(s3); });
-			sz = sizeof(fd);
-			So(nng_getopt(s3, NNG_OPT_SENDFD, &fd, &sz) ==
-			    NNG_ENOTSUP);
-		});
+	});
 
-		Convey("We cannot get a recv FD for PUSH", {
-			nng_socket s3;
-			int        fd;
-			size_t     sz;
-			So(nng_push_open(&s3) == 0);
-			Reset({ nng_close(s3); });
-			sz = sizeof(fd);
-			So(nng_getopt(s3, NNG_OPT_RECVFD, &fd, &sz) ==
-			    NNG_ENOTSUP);
-		});
+	PullConvey("We cannot get a send FD for PULL", {
+		nng_socket s3;
+		int        fd;
+		size_t     sz;
+		So(nng_pull_open(&s3) == 0);
+		Reset({ nng_close(s3); });
+		sz = sizeof(fd);
+		So(nng_getopt(s3, NNG_OPT_SENDFD, &fd, &sz) == NNG_ENOTSUP);
+	});
+
+	PushConvey("We cannot get a recv FD for PUSH", {
+		nng_socket s3;
+		int        fd;
+		size_t     sz;
+		So(nng_push_open(&s3) == 0);
+		Reset({ nng_close(s3); });
+		sz = sizeof(fd);
+		So(nng_getopt(s3, NNG_OPT_RECVFD, &fd, &sz) == NNG_ENOTSUP);
 	});
 })
